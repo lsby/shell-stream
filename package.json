@@ -1,7 +1,6 @@
 {
     "name": "@lsby/shell_stream",
     "version": "0.0.0",
-    "description": "",
     "main": "dist/index.js",
     "scripts": {
         "dev": "npm run watch",
@@ -28,5 +27,20 @@
         "@lsby/log_manage": "^0.0.2",
         "@lsby/promise_wait": "^0.0.3",
         "cross-spawn": "^7.0.3"
-    }
+    },
+    "types": "./dist\\index.d.ts",
+    "directories": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lsby/shell-stream.git"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/lsby/shell-stream/issues"
+    },
+    "homepage": "https://github.com/lsby/shell-stream#readme",
+    "description": ""
 }
