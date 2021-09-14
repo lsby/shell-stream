@@ -12,15 +12,15 @@ function 字符串数组联合(arr: string[]) {
         .filter((a) => a != '')
 }
 
-export default async function (cmd: string, 等待时间: number = 1000) {
+export default async function (cmd: string, 等待时间: number = 1000, 日志缓冲行: number = 200) {
     var c = cmd.trim().replace(/  /g, ' ').split(' ')
 
     var 进程: ChildProcess = spawn(c[0], c.slice(1))
     var 状态: '计算中' | '已结束' | '等待输入' = '计算中'
     var 退出码: number | null = null
     var 错误: Error | null = null
-    var out日志 = 日志管理者()
-    var err日志 = 日志管理者()
+    var out日志 = 日志管理者(日志缓冲行)
+    var err日志 = 日志管理者(日志缓冲行)
 
     if (进程.stdout == null) throw '创建失败'
     if (进程.stderr == null) throw '创建失败'
