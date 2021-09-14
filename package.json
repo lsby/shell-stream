@@ -1,0 +1,32 @@
+{
+    "name": "@lsby/shell_stream",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "npm run watch",
+        "build": "tsc",
+        "watch": "tsc -w",
+        "pretest": "npm run build",
+        "test": "ts-mocha --bail test/**/*.test.ts",
+        "clean_node_modules": "rm -rf ./node_modules",
+        "clean_dist": "rm -rf ./dist",
+        "clean": "npm run clean_node_modules && npm run clean_dist",
+        "prepub": "npm run build",
+        "pub": "npm publish --access=public"
+    },
+    "author": "",
+    "devDependencies": {
+        "@lsby/js_tools": "^0.0.3",
+        "@types/cross-spawn": "^6.0.2",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "^16.9.1",
+        "ts-mocha": "^8.0.0",
+        "typescript": "^4.2.4"
+    },
+    "dependencies": {
+        "@lsby/log_manage": "^0.0.2",
+        "@lsby/promise_wait": "^0.0.3",
+        "cross-spawn": "^7.0.3"
+    }
+}
