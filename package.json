@@ -11,7 +11,7 @@
         "clean_node_modules": "rm -rf ./node_modules",
         "clean_dist": "rm -rf ./dist",
         "clean": "npm run clean_node_modules && npm run clean_dist",
-        "prepub": "npm run build",
+        "prepub": "npm run build && npm run test",
         "pub": "npm publish --access=public"
     },
     "author": "",
