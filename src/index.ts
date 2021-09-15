@@ -21,6 +21,8 @@ export default async function (cmd: string, 等待时间: number = 1000, 日志�
     var 错误: Error | null = null
     var out日志 = 日志管理者(日志缓冲行)
     var err日志 = 日志管理者(日志缓冲行)
+    var out定时器: null | NodeJS.Timeout = null
+    var err定时器: null | NodeJS.Timeout = null
 
     if (进程.stdout == null) throw '创建失败'
     if (进程.stderr == null) throw '创建失败'
@@ -35,14 +37,16 @@ export default async function (cmd: string, 等待时间: number = 1000, 日志�
         状态 = '已结束'
     })
     进程.stdout.on('data', (data) => {
+        if (out定时器 != null) clearTimeout(out定时器)
         状态 = '计算中'
         out日志.添加(data.toString())
-        setTimeout(() => (状态 = '等待输入'), 等待时间)
+        out定时器 = setTimeout(() => (状态 = '等待输入'), 等待时间)
     })
     进程.stderr.on('data', (data) => {
+        if (err定时器 != null) clearTimeout(err定时器)
         状态 = '计算中'
         err日志.添加(data.toString())
-        setTimeout(() => (状态 = '等待输入'), 等待时间)
+        err定时器 = setTimeout(() => (状态 = '等待输入'), 等待时间)
     })
 
     var r = {
