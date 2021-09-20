@@ -5,7 +5,7 @@ describe('基本测试', function () {
     it('测试1', async function () {
         this.timeout(99999999999)
 
-        var p = await lib('cmd')
+        var p = await lib('cmd', {})
         await p.等待计算()
 
         await p.计算('dir')
