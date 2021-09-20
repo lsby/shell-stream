@@ -2,6 +2,7 @@ import { ChildProcess, exec } from 'child_process'
 import spawn from 'cross-spawn'
 import 日志管理者 from '@lsby/log_manage'
 import 等待 from '@lsby/promise_wait'
+import * as child_process from 'child_process'
 
 function 字符串数组联合(arr: string[]) {
     return arr
@@ -12,10 +13,15 @@ function 字符串数组联合(arr: string[]) {
         .filter((a) => a != '')
 }
 
-export default async function (cmd: string, 等待时间: number = 1000, 日志缓冲行: number = 200) {
+export default async function (
+    cmd: string,
+    opt: child_process.SpawnOptions,
+    等待时间: number = 1000,
+    日志缓冲行: number = 200,
+) {
     var c = cmd.trim().replace(/  /g, ' ').split(' ')
 
-    var 进程: ChildProcess = spawn(c[0], c.slice(1))
+    var 进程: ChildProcess = spawn(c[0], c.slice(1), opt)
     var 状态: '计算中' | '已结束' | '等待输入' = '计算中'
     var 退出码: number | null = null
     var 错误: Error | null = null
@@ -65,11 +71,18 @@ export default async function (cmd: string, 等待时间: number = 1000, 日志�
             await 等待(() => 状态 != '计算中')
             return 字符串数组联合((await err日志.获得日志池()).map((a) => a.内容))
         },
+        获取日志: async () => {
+            await 等待(() => 状态 != '计算中')
+            return {
+                out: 字符串数组联合((await out日志.获得日志池()).map((a) => a.内容)),
+                err: 字符串数组联合((await err日志.获得日志池()).map((a) => a.内容)),
+            }
+        },
         输入: async (_cmd: string, 回显: boolean = true) => {
             if (状态 == '已结束') throw '进程已结束'
+            await 等待(() => 状态 == '等待输入')
 
             var cmd = _cmd[_cmd.length - 1] == '\n' ? _cmd : _cmd + '\n'
-            await 等待(() => 状态 == '等待输入')
             if (回显) {
                 await out日志.追加(cmd)
             }
@@ -79,9 +92,9 @@ export default async function (cmd: string, 等待时间: number = 1000, 日志�
         },
         计算: async (_cmd: string, 回显: boolean = true) => {
             if (状态 == '已结束') throw '进程已结束'
+            await 等待(() => 状态 == '等待输入')
 
             var cmd = _cmd[_cmd.length - 1] == '\n' ? _cmd : _cmd + '\n'
-            await 等待(() => 状态 == '等待输入')
             if (回显) {
                 await out日志.追加(cmd)
             }
